@@ -1,0 +1,57 @@
+
+version: '3'
+services:
+    node1:       
+        image: cassandra-sparkslave
+        networks:
+            - dc1ring
+        volumes:
+            - ./node-1-data:/var/lib/cassandra
+        environment:
+            - CASSANDRA_CLUSTER_NAME=mega
+        expose:
+            - 7000
+            - 7001
+            - 7199
+            - 9042
+            - 9160
+        ulimits:
+            memlock: -1
+            nproc: 32768
+            nofile: 100000
+    node2:       
+        image: cassandra-sparkslave
+        networks:
+            - dc1ring
+        volumes:
+            - ./node-2-data:/var/lib/cassandra
+        environment:
+            - CASSANDRA_CLUSTER_NAME=mega
+            - CASSANDRA_SEEDS=node1
+        expose:
+            - 7000
+            - 7001
+            - 7199
+            - 9042
+            - 9160
+        ulimits:
+            memlock: -1
+            nproc: 32768
+            nofile: 100000            
+    portainer:
+        image: portainer/portainer
+        command: --templates http://templates/templates.json
+        networks:
+            - dc1ring
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./portainer-data:/data
+        # Enable you to access potainers web interface from your host machine
+        # using http://localhost:10001
+        ports:
+            - "10001:9000"
+networks:
+    dc1ring:
+#volumes:
+#   node-1-data:
+#   node-2-data:
