@@ -1,14 +1,22 @@
-
 version: '3'
 services:
-    node1:       
-        image: cassandra-sparkslave
+    sparkmaster:       
+        image: holtri/spark-master
         networks:
-            - dc1ring
+            - energydata_nw
+        ports:
+            - "8080:8080"
+    node1:       
+        image: holtri/cassandra-sparkslave
+        depends_on:
+            - sparkmaster 
+        networks:
+            - energydata_nw
         volumes:
             - ./node-1-data:/var/lib/cassandra
         environment:
             - CASSANDRA_CLUSTER_NAME=mega
+            - SPARKMASTER=sparkmaster
         expose:
             - 7000
             - 7001
@@ -20,9 +28,11 @@ services:
             nproc: 32768
             nofile: 100000
     node2:       
-        image: cassandra-sparkslave
+        image: holtri/cassandra-sparkslave
+        depends_on:
+            - sparkmaster
         networks:
-            - dc1ring
+            - energydata_nw
         volumes:
             - ./node-2-data:/var/lib/cassandra
         environment:
@@ -37,21 +47,6 @@ services:
         ulimits:
             memlock: -1
             nproc: 32768
-            nofile: 100000            
-    portainer:
-        image: portainer/portainer
-        command: --templates http://templates/templates.json
-        networks:
-            - dc1ring
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-            - ./portainer-data:/data
-        # Enable you to access potainers web interface from your host machine
-        # using http://localhost:10001
-        ports:
-            - "10001:9000"
+            nofile: 100000                        
 networks:
-    dc1ring:
-#volumes:
-#   node-1-data:
-#   node-2-data:
+    energydata_nw:

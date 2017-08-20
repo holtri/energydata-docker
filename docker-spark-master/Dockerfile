@@ -1,24 +1,20 @@
-FROM alpine
+FROM debian:stretch-backports
 
-COPY supervisor.conf /etc/supervisor.conf
+COPY supervisord.conf /etc/supervisor/conf.d/
+
+RUN apt-get update && apt-get install -y \
+	openjdk-8-jre \
+	wget
 
 RUN mkdir /app
-
-RUN apk update && apk add \
-	openjdk8-jre \
-	wget 
-
-RUN wget -O - https://d3kbcqa49mib13.cloudfront.net/spark-2.2.0-bin-hadoop2.7.tgz | tar -xz -C /app
-
-RUN apk update && apk add \
-	bash \
-	python \
-	py-pip
-
-RUN pip install supervisor
 	
+RUN ["/bin/bash", "-c", "set -o pipefail && wget -O - https://d3kbcqa49mib13.cloudfront.net/spark-2.2.0-bin-hadoop2.7.tgz | tar -xz -C /app"]
+
+RUN apt-get update && apt-get install -y \
+	supervisor \
+	less \
+	vim
+		
+CMD ["/bin/bash", "-c", "/usr/bin/supervisord"]
+
 EXPOSE 8080
-
-ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisor.conf"]
-
-
