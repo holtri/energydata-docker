@@ -125,6 +125,18 @@ services:
         networks:
             - energydata_nw
 
+# Jupyter Notebook
+    jupyter:
+        image: jupyter/pyspark-notebook
+        # for custom password append  --NotebookApp.password='sha1:74ba40f8a388:c913541b7ee99d15d5ed31d4226bf7838f83a50e' (see https://hub.docker.com/r/jupyter/pyspark-notebook/)
+        command: start-notebook.sh 
+        volumes:
+            - ./jupyter-data:/home/jovyan/work
+        ports: 
+            - "8888:8888"
+        network:
+            - energydata_nw
+            
 # simple visualization         
     visualizer:
         image: dockersamples/visualizer:stable
