@@ -134,7 +134,7 @@ services:
             - ./jupyter-data:/home/jovyan/work
         ports: 
             - "8888:8888"
-        network:
+        networks:
             - energydata_nw
             
 # simple visualization         
