@@ -129,7 +129,7 @@ services:
     jupyter:
         image: jupyter/pyspark-notebook
         # for custom password append  --NotebookApp.password='sha1:74ba40f8a388:c913541b7ee99d15d5ed31d4226bf7838f83a50e' (see https://hub.docker.com/r/jupyter/pyspark-notebook/)
-        command: start-notebook.sh 
+        command: start-notebook.sh --NotebookApp.password='sha1:22050c912871:90073c0c3a0cb0ed20cbeb8c70a46dd52ed39d4c'
         volumes:
             - ./jupyter-data:/home/jovyan/work
         ports: 
