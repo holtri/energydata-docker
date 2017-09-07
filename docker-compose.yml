@@ -65,7 +65,7 @@ services:
             - energydata_nw
             
     broker:
-        image: confluentinc/cp-kafka
+        image: holtri/kafka-broker-connect
         hostname: broker
         depends_on:
           - zookeeper
@@ -94,37 +94,6 @@ services:
         networks:
             - energydata_nw
             
-    connect:
-        image: confluentinc/cp-kafka-connect
-        hostname: connect
-        depends_on:
-            - zookeeper
-            - broker
-            - schema_registry
-        ports:
-            - "8083:8083"
-        environment:
-            CONNECT_BOOTSTRAP_SERVERS: 'broker:9092'
-            CONNECT_REST_ADVERTISED_HOST_NAME: connect
-            CONNECT_REST_PORT: 8083
-            CONNECT_GROUP_ID: compose-connect-group
-            CONNECT_CONFIG_STORAGE_TOPIC: docker-connect-configs
-            CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
-            CONNECT_OFFSET_FLUSH_INTERVAL_MS: 10000
-            CONNECT_OFFSET_STORAGE_TOPIC: docker-connect-offsets
-            CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
-            CONNECT_STATUS_STORAGE_TOPIC: docker-connect-status
-            CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
-            CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
-            CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema_registry:8081'
-            CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
-            CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema_registry:8081'
-            CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-            CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-            CONNECT_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-        networks:
-            - energydata_nw
-
 # Jupyter Notebook
     jupyter:
         image: jupyter/pyspark-notebook
@@ -137,14 +106,5 @@ services:
         networks:
             - energydata_nw
             
-# simple visualization         
-    visualizer:
-        image: dockersamples/visualizer:stable
-        ports:
-          - "8099:8080"
-        volumes:
-          - "/var/run/docker.sock:/var/run/docker.sock"      
-        networks:
-            - energydata_nw            
 networks:
     energydata_nw:
