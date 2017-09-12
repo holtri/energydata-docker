@@ -14,11 +14,15 @@ $ sudo docker-compose up -d
 
 If you have a fresh docker installation, this will first pull the required images from dockerhub. Then, containers are instantiated according to docker-compose.yml. The setup includes a Single-Node Kafka broker (including a connect standalone), zookeeper, schema registry, a Spark-Master, a two-node Cassandra cluster with co-located Spark workers and a container running Jupyter Notebook. The nodes are able to talk to each other on all ports in a local network. The port bindings from each container to the outside world are also specified in the docker-compose.yml.
 
-We build some of the container images tailored to our use-case. You can find the docker files for the containers in the directories docker-cassandra-spark-slave, docker-kafka, and docker-spark-master. The images are also [published to dockerhub](https://hub.docker.com/u/holtri/).
+Some of the container images used in this setup are tailored to our use-case. You can find the docker files for the containers in the directories docker-cassandra-spark-slave, docker-kafka, and docker-spark-master. The images are also [published to dockerhub](https://hub.docker.com/u/holtri/).
 
 # Running the Examples
 
-This repository includes example code for an end-to-end use case. The use-case bases on two data sets: weather data from https://data.open-power-system-data.org/weather_data/2017-07-05/ and generation of solar and wind power from https://data.open-power-system-data.org/time_series/. Jupyter notebooks to preprocess the data are available in the directory _data-preprocessing_.
+This repository includes example code for an end-to-end use case. The use-case bases on two data sets: weather data and power generation from https://data.open-power-system-data.org. Jupyter notebooks to preprocess the data are available in the directory _data-preprocessing_. To prepare the data, download the following two data sets into the folder data-preprocessing and run jupyter notebooks
+
+[weather_data_GER_2016.csv](https://data.open-power-system-data.org/weather_data/)
+
+[time_series_15min_stacked.csv](https://data.open-power-system-data.org/time_series/) (make sure you download the \_stacked.csv!)
 
 ## Kafka
 
