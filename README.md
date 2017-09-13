@@ -50,6 +50,24 @@ which outputs several csv files (please see the notebooks on how they are genera
 
 ## Kafka
 
+The folder stream-simulation contains various scripts that simulate a stream of energy production values.
+
+The startup script ``startup.sh`` can be executed directly after starting the docker containers to simulate the stream for approximately 20 hours.
+
+```$ /stream-simulation/startup.sh```
+
+In detail, the script does the following:
+* Creates two kafka topics ``generation`` and ``generationIngress`` with two partitions each.
+* Copies a cassandra keyspace schema and create that keyspace ``stream``.
+* Configure the kafka-cassandra cassandra to write messages from ``generationIngress`` into the ``stream`` keyspace and start that connector.
+* Copy data and scripts to the jupyter node and start simulating the stream, i.e., sending the data one line per second to the kafka topic ``generation`` and with JSON formatting to ``generationIngress``. The simulating scripts uses the [kafka plugin for python](https://github.com/dpkp/kafka-python), which is not supplied but installed dynamically on the jupyter node and thus requires an internet connection. The data consists of 75000 lines and simulates a stream for approximately 20 hours.
+
+The kafka topic ``generation`` can then be interacted with using the consumer and producer scripts deployed on the jupyter node.
+
+```$ docker exec -it -u 0 energydatadocker_jupyter_1 python data/consumer.py```
+
+```$ docker exec -it -u 0 energydatadocker_jupyter_1 python data/producer.py```
+
 ## Cassandra
 
 To allow Kafka Connect to insert into cassandra, we need several tables. First, open a bash on one of the Cassandra nodes with
