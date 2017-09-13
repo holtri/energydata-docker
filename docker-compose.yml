@@ -103,6 +103,7 @@ services:
             - ./jupyter-data:/home/jovyan/work
         ports: 
             - "8888:8888"
+            - "5040:4040"
         networks:
             - energydata_nw
             
