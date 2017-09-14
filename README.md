@@ -66,11 +66,14 @@ The kafka topic ``generation`` can then be interacted with using the consumer an
 
 ```$ docker exec -it -u 0 energydatadocker_jupyter_1 python data/consumer.py```
 
-```$ docker exec -it -u 0 energydatadocker_jupyter_1 python data/producer.py```
+```$ docker exec -it -u 0 energydatadocker_jupyter_1 python data/producer.py
+```
 
 ## Cassandra
 
-To allow Kafka Connect to insert into cassandra, we need several tables. First, open a bash on one of the Cassandra nodes with
+To allow Kafka Connect to insert into Cassandra, the respective keyspace and table must already exist in Cassandra. In the [kafka](#kafka) section, this is done automagically by the script provided. In this section, we create a separate keyspace and tables for data and manually import the data from csv (instead of Kafka). This is helpful if you want to directly test Cassandra without going through the Kkafka ingress procedure.
+
+First, open a bash on one of the Cassandra nodes with
 
 ```bash
 energydata-docker$ sudo docker exec -it energydatadocker_node1_1 bash
