@@ -52,10 +52,11 @@ which outputs several csv files (please see the notebooks on how they are genera
 
 The folder stream-simulation contains various scripts that simulate a stream of energy production values.
 
-The startup script ``startup.sh`` can be executed directly after starting the docker containers to simulate the stream for approximately 20 hours.
+The startup script ``startup.sh`` can be executed directly in the stream-simulation folder after starting the docker containers to simulate the stream for approximately 20 hours.
 
 ```bash
- $ /stream-simulation/startup.sh
+ $ cd stream-simulation
+ $ ./startup.sh
 ```
 
 In detail, the script does the following:
