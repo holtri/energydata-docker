@@ -54,7 +54,9 @@ The folder stream-simulation contains various scripts that simulate a stream of 
 
 The startup script ``startup.sh`` can be executed directly after starting the docker containers to simulate the stream for approximately 20 hours.
 
-```$ /stream-simulation/startup.sh```
+```bash
+ $ /stream-simulation/startup.sh
+```
 
 In detail, the script does the following:
 * Creates two kafka topics ``generation`` and ``generationIngress`` with two partitions each.
@@ -64,9 +66,12 @@ In detail, the script does the following:
 
 The kafka topic ``generation`` can then be interacted with using the consumer and producer scripts deployed on the jupyter node.
 
-```$ docker exec -it -u 0 energydatadocker_jupyter_1 python data/consumer.py```
+```bash
+ $ docker exec -it -u 0 energydatadocker_jupyter_1 python data/consumer.py
+```
 
-```$ docker exec -it -u 0 energydatadocker_jupyter_1 python data/producer.py
+```bash
+ $ docker exec -it -u 0 energydatadocker_jupyter_1 python data/producer.py
 ```
 
 ## Cassandra
@@ -108,7 +113,6 @@ Then run the COPY cql commands from [cassandra-data/cassandra-import.cql](cassan
 ```bash
 cqlsh> COPY energydata.generation (ts,type,region,value) from '/energydata/de_generation.csv' with HEADER=true AND DELIMITER=',';
 ```
-
 
 ## Spark
 
